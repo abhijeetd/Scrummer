@@ -1,0 +1,86 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<div class="row">
+    <div class="col-md-2">
+        <h3><i class="glyphicon glyphicon-tower"></i> Projects</h3>
+        <div ng-controller="ProjectCtrl">
+            <div class="input-group">
+                <input type="text" ng-model="vm.newObject.title" class="form-control" />
+                <span class="input-group-btn">
+                    <button class="btn btn-info" ng-click="vm.add()"><i class="glyphicon glyphicon-plus"></i></button>
+                </span>
+            </div>
+            <br />
+            <div class="well well-sm">
+                <ul class="nav nav-stacked">
+                    <li ng-repeat="line in vm.list">
+                        <span>
+                            <a href="/standups/index/{{line.title}}">{{line.title}}</a>
+                            <a class="btn btn-link" ng-if="!line.isDiscussed" ng-click="vm.delete($index, line)"><i class="glyphicon glyphicon-remove"></i></a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10">
+        <div ng-controller="UserCtrl">
+            <h3><i class="glyphicon glyphicon-user"></i> Users</h3>
+
+            <div class="row">
+                <div class="col-md-2"><h4>Username</h4></div>
+                <div class="col-md-2"><h4>Firstname</h4></div>
+                <div class="col-md-2"><h4>Lastname</h4></div>
+                <div class="col-md-3"><h4>Email</h4></div>
+                <div class="col-md-2"><h4>Project</h4></div>
+                <div class="col-md-1">
+                    <a href="#" class="btn btn-primary btn-sm" title="sync with active directory" ng-click="vm.syncUsers()"><i class=" glyphicon glyphicon-refresh"></i> Sync</a>
+                </div>
+            </div>
+            <div class="well well-sm" style="padding:2px 0;margin-bottom:5px;">
+                <div class="row">
+                    <div class="col-md-2"><input type="text" ng-model="vm.selectedUsername" class="form-control input-sm" placeholder="username" /> </div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-3"></div>
+                    <div class="col-md-2">
+                        <select ng-model="vm.selectedProject" class="form-control input-sm">
+                            <option ng-repeat="p in vm.projects" value="{{p.title}}">{{p.title}}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-sm btn-success" ng-click="vm.load()"><i class=" glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-repeat="line in vm.list">
+                <div class="row">
+                    <div class="col-md-2">
+                        <a href="/standups/member/{{line.username}}">{{line.username}}</a>
+                    </div>
+                    <div class="col-md-2">{{line.firstname}}</div>
+                    <div class="col-md-2">{{line.lastname}}</div>
+                    <div class="col-md-3">{{line.email}}</div>
+                    <div class="col-md-2">
+                        <div ng-hide="line.editing">
+                            {{line.project}}
+                        </div>
+                        <select ng-show="line.editing" ng-model="line.project" class="form-control input-sm" ng-change="vm.assignProject(line)">
+                            <option ng-repeat="p in vm.projects" value="{{p.title}}">{{p.title}}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-1">
+                        <div ng-hide="line.editing">
+                            <a href="#" class="small" ng-click="vm.enableEditing(line)"><i class=" glyphicon glyphicon-pencil "></i></a>&nbsp;
+                        </div>
+                    </div>
+                </div>
+                <hr class="row-compact" />
+            </div>
+
+        </div>
+    </div>
+
+</div>

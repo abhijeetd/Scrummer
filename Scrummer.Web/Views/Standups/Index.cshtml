@@ -1,0 +1,160 @@
+﻿@model Scrummer.Domain.Accounts.User
+
+<style>
+    .agenda-discussed {
+        text-decoration: line-through;
+    }
+</style>
+
+<div>
+    <div class="row">
+        <div class="col-md-3">
+            <h3>
+                @DateTime.Now.ToLongDateString()
+                &nbsp;&nbsp;
+                <a href="#"><i class="glyphicon glyphicon-pencil"></i></a>                
+            </h3>
+            <hr />
+            <div ng-controller="AgendaCtrl">
+                <h4>Agenda</h4>
+                <div class="alert alert-info">
+                    <ul class="nav nav-stacked">
+                        <li>
+                            <div class="input-group">
+                                <input type="text" ng-model="vm.newObject.title" class="form-control" />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-info" ng-click="vm.add()"><i class="glyphicon glyphicon-plus"></i></button>
+                                </span>
+                            </div>
+                        </li>
+                        <li class="nav-divider"></li>
+                        <li ng-repeat="line in vm.list">
+                            <span ng-class="vm.css(line.isDiscussed)">
+                                {{line.title}}
+                                <a class="btn btn-link" ng-if="!line.isDiscussed" ng-click="vm.markDiscussed(line)"><i class=" glyphicon glyphicon-ok"></i></a>
+                                <a class="btn btn-link" ng-if="!line.isDiscussed" ng-click="vm.delete($index, line)"><i class=" text-danger glyphicon glyphicon-remove"></i></a>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div ng-controller="ActionItemCtrl">
+                <h4>Action Items</h4>
+                <div class="alert alert-success">
+                    <ul class="nav nav-stacked">
+                        <li>
+                            <div class="input-group">
+                                <input type="text" ng-model="vm.newObject.title" class="form-control" />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-success" ng-click="vm.add()"><i class="glyphicon glyphicon-plus"></i></button>
+                                </span>
+                            </div>
+                        </li>
+                        <li class="nav-divider"></li>
+                        <li ng-repeat="line in vm.list">
+                            <span ng-class="vm.css(line.isDiscussed)">
+                                {{line.title}}
+                                <a class="btn btn-link" ng-click="vm.delete($index, line)"><i class=" text-danger glyphicon glyphicon-remove"></i></a>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9" ng-controller="IndividualStatusCtrl">
+            <h3>Individual contributions</h3>
+            <hr />
+            <input type="hidden" id="currentProject" ng-model="vm.currentProject" />
+            <input type="hidden" id="currentUser" ng-model="vm.currentUser" />
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-default" ng-show="vm.isEditorVisible">
+                        <div class="panel-heading">
+                            Status Update Editor
+                        </div>
+                        <div class="panel-body">
+                            <ol>
+                                <li>
+                                    What work did you do yesterday?
+                                    <textarea class="form-control" ng-model="vm.newObject.yesterday"></textarea>
+                                    <br />
+                                </li>
+                                <li>
+                                    Are there any outstanding tasks?
+                                    <textarea class="form-control" ng-model="vm.newObject.outstandingTasks"></textarea>
+                                    <br />
+                                </li>
+                                <li>
+                                    What work do you plan to do today?
+                                    <textarea class="form-control" ng-model="vm.newObject.today"></textarea>
+                                    <br />
+                                </li>
+                                <li>
+                                    Are there any impediments?
+                                    <textarea class="form-control" ng-model="vm.newObject.impediments"></textarea>
+                                    <br />
+                                </li>
+                                <li>
+                                    <input type="checkbox" ng-model="vm.newObject.isTfsUpdated" />  TFS Updated<br />
+                                    <input type="checkbox" ng-model="vm.newObject.isClicktimeUpdated" />  Clicktime Updated<br />
+                                </li>
+                            </ol>
+
+
+                        </div>
+                        <div class=" panel-footer text-right">
+                            <button class="btn btn-primary" ng-click="vm.updateStatus(false)">Done</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div ng-hide="vm.isEditorVisible">
+                <div class="row">
+                    <div class="col-md-1"><h4>Member</h4></div>
+                    <div class="col-md-3"><h4>Yesterday</h4></div>
+                    <div class="col-md-3"><h4>Today</h4></div>
+                    <div class="col-md-3"><h4>Impediments</h4></div>
+                    <div class="col-md-1"><h4>Checklist</h4></div>
+
+                </div>
+                <hr class="row-compact" />
+                <div ng-repeat="line in vm.list">
+                    <div class="row">
+                        <div class="col-md-1"><a href="/standups/member/{{line.assignedTo}}">{{line.assignedTo}}</a></div>
+                        <div class="col-md-3">{{line.yesterday}}</div>
+                        <div class="col-md-3">
+                            {{line.today}}
+                            <div class="text-danger" ng-show="line.hasOutstandingTasks">{{line.outstandingTasks}}</div>
+                        </div>
+                        <div class="col-md-3">{{line.impediments}}</div>
+                        <div class="col-md-1">
+                            <ul class="nav">
+                                <li><i class="glyphicon glyphicon-ok text-success" ng-show="line.isTfsUpdated"></i> <i class="glyphicon glyphicon-minus text-warning" ng-hide="line.isTfsUpdated"></i> TFS</li>
+                                <li><i class="glyphicon glyphicon-ok text-success" ng-show="line.isClicktimeUpdated"></i> <i class="glyphicon glyphicon-minus text-warning" ng-hide="line.isClicktimeUpdated"></i> Clicktime</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-1">
+                            <a href="#" class="btn btn-link" ng-click="vm.showEditor($index)" ng-show="line.canEdit"><i class="glyphicon glyphicon-pencil"></i></a>
+                        </div>
+                    </div>
+                    <hr class="row-compact" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+</div>
+
+<script>
+    $(function () {
+        var scope = angular.element($("#currentProject")).scope();
+        scope.$apply(function () {
+            scope.vm.currentUser = "@Model.Username";
+            scope.vm.currentProject = "@ViewBag.CurrentProject";
+            scope.vm.load();
+        });
+    });
+</script>

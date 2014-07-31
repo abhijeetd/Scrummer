@@ -1,0 +1,39 @@
+﻿
+<div ng-controller="MemberwiseCtrl">
+    <input type="hidden" id="currentUser" ng-model="vm.currentUser" />
+    <h3><a href="/standups"><i class="glyphicon glyphicon-chevron-left"></i></a>  {{vm.currentUser}}</h3>
+    <hr />
+    <div class="row">
+        <div class="col-md-1"><label>Date</label></div>
+        <div class="col-md-3"><label>Yesterday</label></div>
+        <div class="col-md-3"><label>Today</label></div>
+        <div class="col-md-3"><label>Impediments</label></div>
+        <div class="col-md-1"><label>TFS?</label></div>
+        <div class="col-md-1"><label>Clicktime?</label></div>
+    </div>
+    <hr class="row-compact" />
+    <div ng-repeat="line in vm.list">
+        <div class="row">
+            <div class="col-md-1">{{line.date | date}}</div>
+            <div class="col-md-3">{{line.yesterday}}</div>
+            <div class="col-md-3">
+                {{line.today}}
+                <div class="text-danger" ng-show="line.hasOutstandingTasks">{{line.outstandingTasks}}</div>
+            </div>
+            <div class="col-md-3">{{line.impediments}}</div>
+            <div class="col-md-1"><i class="glyphicon glyphicon-ok text-success" ng-show="line.isTfsUpdated"></i> <i class="glyphicon glyphicon-minus text-warning" ng-hide="line.isTfsUpdated"></i></div>
+            <div class="col-md-1"><i class="glyphicon glyphicon-ok text-success" ng-show="line.isClicktimeUpdated"></i> <i class="glyphicon glyphicon-minus text-warning" ng-hide="line.isClicktimeUpdated"></i></div>
+        </div>
+        <hr class="row-compact" />
+    </div>
+</div>
+
+<script>
+    $(function () {
+        var scope = angular.element($("#currentUser")).scope();
+        scope.$apply(function () {
+            scope.vm.currentUser = "@ViewBag.CurrentUser";
+            scope.vm.load();
+        });
+    });
+</script>

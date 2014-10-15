@@ -122,19 +122,25 @@ var Scrummer;
 
         var AgendaCtrl = (function (_super) {
             __extends(AgendaCtrl, _super);
-            function AgendaCtrl($scope, $http) {
+            function AgendaCtrl($scope, $http, $route) {
                 var _this = this;
                 _super.call(this, $scope, $http);
                 this.$scope = $scope;
                 this.$http = $http;
+                this.$route = $route;
                 this.init = function () {
+                    if (_this.today === undefined) {
+                        _this.today = new Date(); //this.$route.current.params.date;
+                    }
                     _this.initNewObject();
-                    _this.today = new Date();
                     _this.load();
+                };
+                this.convertToActionItem = function (line) {
+                    _this.$scope.$emit("emitConvertingAgenda", line);
                 };
                 this.initNewObject = function () {
                     _this.newObject = new Agenda();
-                    _this.newObject.date = new Date();
+                    _this.newObject.date = _this.today;
                 };
                 this.getUrl = function () {
                     return _this.getBaseUrl() + "/agendas";
@@ -153,7 +159,7 @@ var Scrummer;
                 };
                 this.init();
             }
-            AgendaCtrl.$inject = ["$scope", "$http"];
+            AgendaCtrl.$inject = ["$scope", "$http", "$route"];
             return AgendaCtrl;
         })(Common.Framework.CrudMasterCtrl);
         Standups.AgendaCtrl = AgendaCtrl;
@@ -184,8 +190,23 @@ var Scrummer;
                 this.$http = $http;
                 this.init = function () {
                     _this.initNewObject();
-                    _this.today = new Date();
+                    if (_this.today === undefined) {
+                        _this.today = new Date();
+                    }
                     _this.load();
+                    _this.loadUsers();
+                    var me = _this;
+                    _this.$scope.$on("convertingAgenda", function (event, args) {
+                        me.newObject.title = args.title;
+                    });
+                };
+                this.loadUsers = function () {
+                    var me = _this;
+                    me.$http.get("/api/accounts/users?project=" + _this.currentProject).success(function (data) {
+                        if (data !== undefined) {
+                            me.users = data;
+                        }
+                    });
                 };
                 this.initNewObject = function () {
                     _this.newObject = new ActionItem();
@@ -197,6 +218,16 @@ var Scrummer;
                 this.getBaseUrl = function () {
                     return "/api/standups/" + _this.convertToMMDDYYYY(_this.today);
                 };
+                this.css = function (isCompleted) {
+                    return isCompleted ? "agenda-discussed" : "";
+                };
+                this.markCompleted = function (line) {
+                    var me = _this;
+                    _this.$http.put(_this.getUrl() + "/" + line._id + "/completed", null).success(function (data) {
+                        line.isCompleted = true;
+                    });
+                };
+                this.currentProject = "ESM";
                 this.init();
             }
             ActionItemCtrl.$inject = ["$scope", "$http"];
@@ -230,7 +261,9 @@ var Scrummer;
                 this.$http = $http;
                 this.init = function () {
                     _this.initNewObject();
-                    _this.today = new Date();
+                    if (_this.today === undefined) {
+                        _this.today = new Date();
+                    }
                 };
                 this.initNewObject = function () {
                     _this.newObject = new IndividualStatus();
@@ -266,6 +299,36 @@ var Scrummer;
             return IndividualStatusCtrl;
         })(Common.Framework.CrudMasterCtrl);
         Standups.IndividualStatusCtrl = IndividualStatusCtrl;
+    })(Scrummer.Standups || (Scrummer.Standups = {}));
+    var Standups = Scrummer.Standups;
+})(Scrummer || (Scrummer = {}));
+var Scrummer;
+(function (Scrummer) {
+    /// <reference path="../references.ts" />
+    (function (Standups) {
+        "use strict";
+
+        var ActionitemwiseCtrl = (function (_super) {
+            __extends(ActionitemwiseCtrl, _super);
+            function ActionitemwiseCtrl($scope, $http) {
+                var _this = this;
+                _super.call(this, $scope, $http);
+                this.$scope = $scope;
+                this.$http = $http;
+                this.init = function () {
+                };
+                this.getUrl = function () {
+                    return _this.getBaseUrl() + "/actionitemwise/" + new Date();
+                };
+                this.getBaseUrl = function () {
+                    return "/api/standups";
+                };
+                this.init();
+            }
+            ActionitemwiseCtrl.$inject = ["$scope", "$http"];
+            return ActionitemwiseCtrl;
+        })(Common.Framework.CrudMasterCtrl);
+        Standups.ActionitemwiseCtrl = ActionitemwiseCtrl;
     })(Scrummer.Standups || (Scrummer.Standups = {}));
     var Standups = Scrummer.Standups;
 })(Scrummer || (Scrummer = {}));
@@ -423,9 +486,14 @@ var Scrummer;
     var Accounts = Scrummer.Accounts;
 })(Scrummer || (Scrummer = {}));
 /// <reference path="references.ts" />
-angular.module("main", ["standups", "accounts"]);
+angular.module("main", ["ngRoute", "standups", "accounts"]).run(function ($rootScope) {
+    $rootScope.$on("emitConvertingAgenda", function (event, args) {
+        $rootScope.$broadcast("convertingAgenda", args);
+    });
+});
+;
 
-angular.module("standups", []).controller("AgendaCtrl", Scrummer.Standups.AgendaCtrl).controller("ActionItemCtrl", Scrummer.Standups.ActionItemCtrl).controller("IndividualStatusCtrl", Scrummer.Standups.IndividualStatusCtrl).controller("MemberwiseCtrl", Scrummer.Standups.MemberwiseCtrl);
+angular.module("standups", ["ngRoute"]).controller("AgendaCtrl", Scrummer.Standups.AgendaCtrl).controller("ActionItemCtrl", Scrummer.Standups.ActionItemCtrl).controller("IndividualStatusCtrl", Scrummer.Standups.IndividualStatusCtrl).controller("MemberwiseCtrl", Scrummer.Standups.MemberwiseCtrl).controller("ActionitemwiseCtrl", Scrummer.Standups.ActionitemwiseCtrl);
 
 angular.module("accounts", []).controller("UserCtrl", Scrummer.Accounts.UserCtrl).controller("ProjectCtrl", Scrummer.Accounts.ProjectCtrl);
 /// <reference path="../scripts/typings/jquery/jquery.d.ts" />
@@ -436,6 +504,7 @@ angular.module("accounts", []).controller("UserCtrl", Scrummer.Accounts.UserCtrl
 /// <reference path="standups/AgendaCtrl.ts" />
 /// <reference path="standups/actionitemctrl.ts" />
 /// <reference path="standups/individualstatusctrl.ts" />
+/// <reference path="standups/actionitemwisectrl.ts" />
 /// <reference path="standups/memberwisectrl.ts" />
 /// <reference path="accounts/userctrl.ts" />
 /// <reference path="accounts/projectctrl.ts" />

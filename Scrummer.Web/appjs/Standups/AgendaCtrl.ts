@@ -10,21 +10,27 @@ module Scrummer.Standups {
     }
 
     export class AgendaCtrl extends Common.Framework.CrudMasterCtrl<Agenda> {
-        public static $inject = ["$scope", "$http"];
+        public static $inject = ["$scope", "$http", "$route"];
 
-        constructor(public $scope: Common.Framework.IControllerScope<AgendaCtrl>, public $http: ng.IHttpService) {
+        constructor(public $scope: Common.Framework.IControllerScope<AgendaCtrl>, public $http: ng.IHttpService, public $route: ng.route.IRouteService) {
             super($scope, $http);
             this.init();
         }
         public init = (): void => {
-            this.initNewObject();
-            this.today = new Date();
+            if (this.today === undefined) {
+                this.today = new Date(); //this.$route.current.params.date;
+            }
+            this.initNewObject();            
             this.load();
         };
 
-        public initNewObject = (): void => {    
+        public convertToActionItem = (line: Agenda): void => {
+            this.$scope.$emit("emitConvertingAgenda", line);
+        };
+
+        public initNewObject = (): void => {
             this.newObject = new Agenda();
-            this.newObject.date = new Date();
+            this.newObject.date = this.today;
         };
 
         getUrl = (): string => {
@@ -41,7 +47,7 @@ module Scrummer.Standups {
 
         markDiscussed = (line: Agenda): void => {
             var me = this;
-            this.$http.put(this.getUrl() + "/" + line._id + "/discussed" , null).success((data: any) => {
+            this.$http.put(this.getUrl() + "/" + line._id + "/discussed", null).success((data: any) => {
                 line.isDiscussed = true;
             });
         };

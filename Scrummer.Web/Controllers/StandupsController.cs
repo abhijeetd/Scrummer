@@ -12,15 +12,18 @@ namespace Scrummer.Web.Controllers
     public class StandupsController : BaseController
     {
         StandupService standupService;
+        AccountService accountService;
         public StandupsController()
         {
             standupService = ServiceFactory.GetStandupService();
+            accountService = ServiceFactory.GetAccountService();
         }
 
         // GET: Standups
-        public ActionResult Index(string id)
+        public ActionResult Index(string id, DateTime? date)
         {
             var user = GetCurrentUser();
+            ViewBag.CurrentDate = date.HasValue ? date.Value : DateTime.Now;
             ViewBag.CurrentProject = string.IsNullOrEmpty(id) ? user.Project : id;
             return View(user);
         }
@@ -28,6 +31,15 @@ namespace Scrummer.Web.Controllers
         public ActionResult Member(string id)
         {
             ViewBag.CurrentUser = id;
+            var user = accountService.ValidateAndPopulateProfile(new Domain.Accounts.User { Username = id });
+            if (user != null)
+            {
+                ViewBag.CurrentProject = user.Project;
+            }
+            return View();
+        }
+        public ActionResult ActionItems()
+        {
             return View();
         }
     }

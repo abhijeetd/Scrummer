@@ -1,4 +1,5 @@
 ﻿using Scrummer.Application;
+using Scrummer.Domain.Accounts;
 using Scrummer.Domain.Standups;
 using System;
 using System.Collections.Generic;
@@ -53,6 +54,15 @@ namespace Scrummer.Web.API
         #endregion
 
         #region action items
+        [HttpPut]
+        [Route("{id}/actionitems/{aid}/completed")]
+        public IHttpActionResult MarkActionItemAsCompleted(DateTime id, string aid)
+        {
+            standupService.MarkActionItemAsCompleted(aid);
+            return Ok();
+        }
+
+
         [HttpGet]
         [Route("{id}/actionitems")]
         public List<ActionItem> GetActionItems(DateTime id)
@@ -69,7 +79,6 @@ namespace Scrummer.Web.API
             return Ok<ActionItem>(addedAgenda);
         }
 
-
         [HttpDelete]
         [Route("{id}/actionitems/{aid}")]
         public IHttpActionResult DeleteActionItem(DateTime id, string aid)
@@ -77,6 +86,15 @@ namespace Scrummer.Web.API
             standupService.DeleteActionItem(aid);
             return Ok();
         }
+
+        [HttpGet]
+        [Route("actionitemwise/{date}")]
+        public List<ActionItem> GetMemberwiseHistory(DateTime? date)
+        {
+            var context = new ActionItemContext { Date = date };
+            return standupService.GetActionItems(context).ToList();
+        }
+
         #endregion
 
         #region Individual status
@@ -103,7 +121,7 @@ namespace Scrummer.Web.API
             var context = new IndividualStatusContext { CurrentUser = user };
             return standupService.GetMemberwiseHistory(context).ToList();
         }
-
+        
         #endregion
     }
 }

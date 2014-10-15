@@ -1,0 +1,31 @@
+﻿<div ng-controller="ActionitemwiseCtrl">
+    <input type="hidden" id="currentDate" ng-model="vm.currentDate" />
+    <h3><a href="/standups"><i class="glyphicon glyphicon-chevron-left"></i></a>  {{vm.currentDate | date}}</h3>
+    <hr />
+    <div class="row">
+        <div class="col-md-1"><label>Date</label></div>
+        <div class="col-md-8"><label>Action Item</label></div>
+        <div class="col-md-2"><label>Assigned to</label></div>
+        <div class="col-md-1"><label>Completed?</label></div>
+    </div>
+    <hr class="row-compact" />
+    <div ng-repeat="line in vm.list">
+        <div class="row">
+            <div class="col-md-1">{{line.date | date}}</div>
+            <div class="col-md-8">{{line.title}}</div>
+            <div class="col-md-2">{{line.assignedTo}}</div>
+            <div class="col-md-1">{{line.isCompleted}}</div>
+        </div>
+        <hr class="row-compact" />
+    </div>
+</div>
+
+<script>
+    $(function () {
+        var scope = angular.element($("#currentDate")).scope();
+        scope.$apply(function () {
+            scope.vm.currentDate = "@ViewBag.CurrentDate";
+            scope.vm.load();
+        });
+    });
+</script>

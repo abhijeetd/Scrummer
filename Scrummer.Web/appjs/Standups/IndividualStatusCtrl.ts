@@ -29,7 +29,9 @@ module Scrummer.Standups {
         }
         public init = (): void => {
             this.initNewObject();
-            this.today = new Date();
+            if (this.today === undefined) {
+                this.today = new Date();
+            }
         };
 
         public initNewObject = (): void => {

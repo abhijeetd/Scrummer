@@ -301,6 +301,8 @@
     <Content Include="Content\less\utilities.less" />
     <Content Include="Content\less\variables.less" />
     <Content Include="Content\less\wells.less" />
+    <Content Include="Scripts\datapicker\css\datepicker.css" />
+    <Content Include="Scripts\datapicker\js\bootstrap-datepicker.js" />
     <Content Include="Scripts\errors.json" />
     <Content Include="Scripts\angular-touch.min.js.map" />
     <Content Include="Scripts\angular-sanitize.min.js.map" />
@@ -594,6 +596,7 @@
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Views\Accounts\Index.cshtml" />
+    <Content Include="Views\Standups\ActionItems.cshtml" />
     <TypeScriptCompile Include="appjs\Accounts\AProjectCtrl.ts" />
     <TypeScriptCompile Include="appjs\Accounts\ProjectCtrl.ts" />
     <TypeScriptCompile Include="appjs\Accounts\UserCtrl.ts" />
@@ -603,6 +606,7 @@
     <TypeScriptCompile Include="appjs\framework\CrudMaster.ts" />
     <TypeScriptCompile Include="appjs\references.ts" />
     <TypeScriptCompile Include="appjs\Standups\ActionItemCtrl.ts" />
+    <TypeScriptCompile Include="appjs\Standups\ActionitemwiseCtrl.ts" />
     <TypeScriptCompile Include="appjs\Standups\AgendaCtrl.ts" />
     <TypeScriptCompile Include="appjs\Standups\IndividualStatusCtrl.ts" />
     <Content Include="Scripts\respond.js" />

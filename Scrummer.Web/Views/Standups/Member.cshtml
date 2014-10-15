@@ -14,7 +14,7 @@
     <hr class="row-compact" />
     <div ng-repeat="line in vm.list">
         <div class="row">
-            <div class="col-md-1">{{line.date | date}}</div>
+            <div class="col-md-1"><a href="/standups/index/@ViewBag.CurrentProject?date={{line.date | date : 'M-dd-yyyy'}}">{{line.date | date}}</a></div>
             <div class="col-md-3">{{line.yesterday}}</div>
             <div class="col-md-3">
                 {{line.today}}

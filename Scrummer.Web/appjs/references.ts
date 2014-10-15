@@ -8,6 +8,7 @@
 /// <reference path="standups/AgendaCtrl.ts" />
 /// <reference path="standups/actionitemctrl.ts" />
 /// <reference path="standups/individualstatusctrl.ts" />
+/// <reference path="standups/actionitemwisectrl.ts" />
 /// <reference path="standups/memberwisectrl.ts" />
 
 /// <reference path="accounts/userctrl.ts" />

@@ -19,8 +19,13 @@ namespace Scrummer.Web
         public static AccountService GetAccountService()
         {
             IMongoUnitOfWork uow = new ScrummerUnitOfWork();
-            return new AccountService(new UserRepository(uow), new ProjectRepository(uow));
+            return new AccountService(new UserRepository(uow));
         }
-
+        public static ProjectService GetProjectService()
+        {
+            IMongoUnitOfWork uow = new ScrummerUnitOfWork();
+            return new ProjectService(new UserRepository(uow), new ProjectRepository(uow), new MissionRepository(uow)
+                , new ActivityRepository(uow), new SprintRepository(uow), new TeamMemberRepository(uow));
+        }
     }
 }

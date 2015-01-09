@@ -12,7 +12,8 @@ namespace Scrummer.Infrastructure.Mongo
         {
             //read connectionstring from webapplication
             var connectionString = ConfigurationManager.AppSettings["MongoConnectionString"];
-            database = MongoDatabase.Create(connectionString);
+            var databaseName = ConfigurationManager.AppSettings["DBName"];
+            database = new MongoClient(new MongoUrl(connectionString)).GetServer().GetDatabase(databaseName);
         }
 
         public MongoCollection<TEntity> CreateSet<TEntity>() where TEntity : class

@@ -1,4 +1,4 @@
-﻿using Scrummer.Domain.Standups;
+﻿using Scrummer.Domain.StandupAgg;
 using Scrummer.Infrastructure.Mongo.Seedwork;
 
 namespace Scrummer.Infrastructure.Mongo

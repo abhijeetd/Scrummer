@@ -1,0 +1,36 @@
+﻿<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Project Editor</h4>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-4">
+                <sub>CODE:</sub>
+                <input type="text" class="form-control" ng-model="vm.project.code" />
+                <sub>PROJECT TITLE:</sub>
+                <input type="text" class="form-control" ng-model="vm.project.title" />
+            </div>
+            <div class="col-md-4">
+                <sub>BRIEF OVERVIEW (SUMMARY):</sub>
+                <textarea class="form-control" ng-model="vm.project.summary" rows="5"></textarea>
+            </div>
+            <div class="col-md-4">
+                <sub>TYPE:</sub>
+                <select class="form-control" ng-model="vm.project.type">
+                    <option value="TFS">Team foundation server</option>
+                </select>
+                <sub>CONNECTION STRING:</sub>
+                <input type="text" class="form-control" ng-model="vm.project.details.connectionString" />
+                <sub>USERNAME:</sub>
+                <input type="text" class="form-control" ng-model="vm.project.details.username" />
+                <sub>PASSWORD:</sub>
+                <input type="password" class="form-control" ng-model="vm.project.details.password" />
+            </div>
+        </div>
+    </div>
+    <div class=" panel-footer text-right">
+        <button class="btn btn-default" ng-click="vm.hideEditor(false)"><i class="glyphicon glyphicon-remove"></i> Cancel</button>
+        <button class="btn btn-primary" ng-click="vm.updateProject(false)"><i class="glyphicon glyphicon-ok"></i> Done</button>
+    </div>
+</div>
+

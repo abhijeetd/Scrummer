@@ -1,24 +1,21 @@
-﻿using Scrummer.DirectoryServices;
+﻿using Connectors;
+using Scrummer.DirectoryServices;
 using Scrummer.Domain.Accounts;
+using Scrummer.Domain.ProjectAgg;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Scrummer.Application
 {
     public class AccountService
     {
         IUserRepository _userRepository;
-        IProjectRepository _projectRepository;
-        public AccountService(IUserRepository userRepository, IProjectRepository projectRepository)
+        public AccountService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
-            _projectRepository = projectRepository;
         }
 
         public int CreateActiveDirectoryUsers()
@@ -62,32 +59,9 @@ namespace Scrummer.Application
             }
             if (userContext != null && string.IsNullOrEmpty(userContext.Username) == false)
             {
-                users = users.Where((p) => p.Username == userContext.Username);
+                users = users.Where((p) => p.Username.Contains(userContext.Username));
             }
             return users.OrderBy(p => p.Firstname).ThenBy(p => p.Lastname);
-        }
-
-        public IEnumerable<Project> GetProjects(ProjectContext projectContext)
-        {
-            return _projectRepository.GetAll();
-        }
-
-        public Project AddProject(Project project)
-        {
-            _projectRepository.Add(project);
-            return project;
-        }
-
-        public void DeleteProject(string pid)
-        {
-            _projectRepository.Remove(pid);
-        }
-
-        public void AssignProject(string userId, string project)
-        {
-            var user = _userRepository.Get(userId);
-            user.Project = project;
-            _userRepository.Modify(user);
         }
 
         public User AddUser(User profile)

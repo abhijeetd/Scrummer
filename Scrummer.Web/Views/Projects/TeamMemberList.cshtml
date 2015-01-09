@@ -1,0 +1,17 @@
+﻿<div ng-controller="TeamMemberCtrl">
+    <h4>
+        Team members
+        <a href="#" class="btn btn-default btn-sm" title="Add team member" ng-click="vm.addNew()"><i class="glyphicon glyphicon-plus"></i></a>
+    </h4>
+
+    <ul class="list-group">
+        <li ng-repeat="line in vm.list" class="list-group-item">
+            <span class="badge">{{line.role}}</span>            
+            {{line.firstname}} {{line.lastname}}<br />
+            <a href="mailto:{{line.email}}" class="small">{{line.email}}</a>
+            <a href="#" ng-click="vm.editRecord($index)"><i class="glyphicon glyphicon-pencil"></i></a>
+        </li>
+    </ul>
+    @Html.Partial("TeamMemberEditor")
+</div>
+

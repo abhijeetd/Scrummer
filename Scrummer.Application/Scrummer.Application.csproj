@@ -43,14 +43,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountService.cs" />
+    <Compile Include="GamificationService.cs" />
     <Compile Include="HelperExtensions.cs" />
     <Compile Include="StandupService.cs" />
+    <Compile Include="ProjectService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Connectors\Connectors.csproj">
+      <Project>{cf53a9dc-8b18-4397-af06-40acf2d3048c}</Project>
+      <Name>Connectors</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Scrummer.DirectoryServices\Scrummer.DirectoryServices.csproj">
       <Project>{f2894d4b-661e-4fd0-b4a8-9baaa6159dc7}</Project>
       <Name>Scrummer.DirectoryServices</Name>

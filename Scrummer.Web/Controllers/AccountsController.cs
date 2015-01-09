@@ -17,7 +17,7 @@ namespace Scrummer.Web.Controllers
             accountService = ServiceFactory.GetAccountService();
         }
 
-        public ActionResult Index()
+        public ActionResult Users()
         {
             return View();
         }

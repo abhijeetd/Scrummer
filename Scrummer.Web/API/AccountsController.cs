@@ -1,10 +1,9 @@
-﻿using Scrummer.Application;
+﻿using Connectors;
+using Scrummer.Application;
 using Scrummer.Domain.Accounts;
-using System;
+using Scrummer.Domain.ProjectAgg;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace Scrummer.Web.API
@@ -13,12 +12,15 @@ namespace Scrummer.Web.API
     public class AccountsController : BaseApiController
     {
         private AccountService accountService;
+        private ProjectService projectService;
 
         public AccountsController()
         {
             accountService = ServiceFactory.GetAccountService();
+            projectService = ServiceFactory.GetProjectService();
         }
 
+        #region users
         [HttpPost]
         [Route("users")]
         public IHttpActionResult CreateUsers()
@@ -39,24 +41,31 @@ namespace Scrummer.Web.API
         [Route("users/{id}/assignproject/{project}")]
         public IHttpActionResult AssignProject(string id, string project)
         {
-            accountService.AssignProject(id, project);
+            projectService.AssignProject(id, project);
             return Ok();
         }
+        #endregion
 
         #region projects
         [HttpGet]
-        [Route("projects")]
-        public List<Project> GetProjects()
+        [Route("projects/{code}")]
+        public Project GetProject(string code)
         {
-            var list = accountService.GetProjects(new ProjectContext()).ToList();
+            return projectService.GetProject(code);
+        }
+        [HttpGet]
+        [Route("projects")]
+        public List<Project> GetProjects([FromUri] ProjectFilter context)
+        {
+            var list = projectService.GetProjects(context).ToList();
             return list;
         }
 
-        [HttpPost]
+        [HttpPost, HttpPut]
         [Route("projects")]
-        public IHttpActionResult AddProject(Project project)
+        public IHttpActionResult UpdateProject(Project project)
         {
-            var addedProject = accountService.AddProject(project);
+            var addedProject = projectService.UpdateProject(project);
             return Ok<Project>(addedProject);
         }
 
@@ -65,9 +74,10 @@ namespace Scrummer.Web.API
         [Route("projects/{pid}")]
         public IHttpActionResult DeleteProject(string pid)
         {
-            accountService.DeleteProject(pid);
+            projectService.DeleteProject(pid);
             return Ok();
         }
+
         #endregion
     }
 }

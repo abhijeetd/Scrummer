@@ -55,13 +55,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mongo\ActionItemRepository.cs" />
+    <Compile Include="Mongo\ActivityRepository.cs" />
     <Compile Include="Mongo\AgendaRepository.cs" />
     <Compile Include="Mongo\IndividualStatusRepository.cs" />
+    <Compile Include="Mongo\MissionRepository.cs" />
     <Compile Include="Mongo\ProjectRepository.cs" />
     <Compile Include="Mongo\Seedwork\DomainRepository.cs" />
     <Compile Include="Mongo\Seedwork\IMongoUnitOfWork.cs" />
     <Compile Include="Mongo\Seedwork\MongoRepository.cs" />
     <Compile Include="Mongo\ScrummerUnitOfWork.cs" />
+    <Compile Include="Mongo\SprintRepository.cs" />
+    <Compile Include="Mongo\TeamMemberRepository.cs" />
     <Compile Include="Mongo\UserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

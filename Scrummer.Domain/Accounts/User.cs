@@ -16,5 +16,7 @@ namespace Scrummer.Domain.Accounts
         public string Project { get; set; }
         public bool IsActive { get; set; }
         public bool IsAdmin { get; set; }
+        public string Role { get; set; }
+        public string Location { get; set; }
     }
 }

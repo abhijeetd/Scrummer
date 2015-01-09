@@ -1,4 +1,4 @@
-﻿using Scrummer.Domain.Standups;
+﻿using Scrummer.Domain.StandupAgg;
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -20,6 +20,7 @@ namespace Scrummer.Application
             _userRepository = userRepository;
         }
 
+        #region Agenda
         public Agenda AddAgenda(Agenda agenda)
         {
             _agendaRepository.Add(agenda);
@@ -49,7 +50,7 @@ namespace Scrummer.Application
         {
             _agendaRepository.Remove(aid);
         }
-
+        #endregion
 
         public ActionItem AddActionItem(ActionItem actionItem)
         {

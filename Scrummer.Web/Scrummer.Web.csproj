@@ -132,7 +132,8 @@
   <ItemGroup>
     <Compile Include="API\AccountsController.cs" />
     <Compile Include="API\BaseApiController.cs" />
-    <Compile Include="API\StandupsController.cs" />
+    <Compile Include="API\ProjectsController.cs" />
+    <Compile Include="API\ScrumController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -168,7 +169,8 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\StandupsController.cs" />
+    <Compile Include="Controllers\ProjectsController.cs" />
+    <Compile Include="Controllers\ScrumController.cs" />
     <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Extensions\HttpContextExtensions.cs" />
@@ -202,6 +204,8 @@
     <Content Include="Scripts\angular-scenario.js" />
     <Content Include="Scripts\angular-touch.js" />
     <Content Include="Scripts\angular-touch.min.js" />
+    <Content Include="Scripts\angular-ui-router.js" />
+    <Content Include="Scripts\angular-ui-router.min.js" />
     <Content Include="Scripts\angular-ui\ui-bootstrap-tpls.js" />
     <Content Include="Scripts\angular-ui\ui-bootstrap-tpls.min.js" />
     <Content Include="Scripts\angular-ui\ui-bootstrap.js" />
@@ -595,23 +599,42 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Views\Accounts\Index.cshtml" />
-    <Content Include="Views\Standups\ActionItems.cshtml" />
-    <TypeScriptCompile Include="appjs\Accounts\AProjectCtrl.ts" />
-    <TypeScriptCompile Include="appjs\Accounts\ProjectCtrl.ts" />
-    <TypeScriptCompile Include="appjs\Accounts\UserCtrl.ts" />
-    <TypeScriptCompile Include="appjs\Application.ts" />
-    <TypeScriptCompile Include="appjs\framework\BaseCtrl.ts" />
-    <TypeScriptCompile Include="appjs\framework\BaseObject.ts" />
-    <TypeScriptCompile Include="appjs\framework\CrudMaster.ts" />
-    <TypeScriptCompile Include="appjs\references.ts" />
-    <TypeScriptCompile Include="appjs\Standups\ActionItemCtrl.ts" />
-    <TypeScriptCompile Include="appjs\Standups\ActionitemwiseCtrl.ts" />
-    <TypeScriptCompile Include="appjs\Standups\AgendaCtrl.ts" />
-    <TypeScriptCompile Include="appjs\Standups\IndividualStatusCtrl.ts" />
+    <Content Include="Views\Accounts\Users.cshtml" />
+    <Content Include="app\Projects\ProjectDetails.tpl.html" />
+    <Content Include="Views\Scrum\ActionItems.cshtml" />
+    <Content Include="Views\Projects\pbis.cshtml" />
+    <Content Include="Views\Projects\Index.cshtml" />
+    <Content Include="app\Projects\ProjectEditor.tpl.html" />
+    <Content Include="Views\Projects\Missions.cshtml" />
+    <Content Include="Views\Projects\TeamMemberList.cshtml" />
+    <Content Include="Views\Projects\TeamMemberEditor.cshtml" />
+    <Content Include="Views\Projects\SprintList.cshtml" />
+    <TypeScriptCompile Include="app\Accounts\APlaceholder.ts" />
+    <TypeScriptCompile Include="app\Accounts\UserCtrl.ts" />
+    <TypeScriptCompile Include="app\Application.ts" />
+    <TypeScriptCompile Include="app\Configurations.ts" />
+    <TypeScriptCompile Include="app\framework\BaseCtrl.ts" />
+    <TypeScriptCompile Include="app\framework\BaseObject.ts" />
+    <TypeScriptCompile Include="app\framework\CrudMaster.ts" />
+    <TypeScriptCompile Include="app\framework\IModalContainer.ts" />
+    <TypeScriptCompile Include="app\framework\ModalService.ts" />
+    <TypeScriptCompile Include="app\Projects\MissionCtrl.ts" />
+    <TypeScriptCompile Include="app\Projects\ProjectCtrl.ts" />
+    <TypeScriptCompile Include="app\Projects\ProjectDetailsCtrl.ts" />
+    <TypeScriptCompile Include="app\Projects\ProjectEditorCtrl.ts" />
+    <TypeScriptCompile Include="app\Projects\SprintCtrl.ts" />
+    <TypeScriptCompile Include="app\Projects\TeamMemberCtrl.ts" />
+    <TypeScriptCompile Include="app\Projects\TeamMemberEditorCtrl.ts" />
+    <TypeScriptCompile Include="app\references.ts" />
+    <TypeScriptCompile Include="app\Scrum\ActionItemCtrl.ts" />
+    <TypeScriptCompile Include="app\Scrum\ActionitemwiseCtrl.ts" />
+    <TypeScriptCompile Include="app\Scrum\AgendaCtrl.ts" />
+    <TypeScriptCompile Include="app\Scrum\IndividualStatusCtrl.ts" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -627,11 +650,16 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-    <Content Include="Views\Standups\Index.cshtml" />
-    <Content Include="Views\Standups\Member.cshtml" />
+    <Content Include="Views\Scrum\Standups.cshtml" />
+    <Content Include="Views\Scrum\Member.cshtml" />
     <Content Include="Scripts\version.json" />
+    <None Include="Views\Projects\MissionEditor.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Connectors\Connectors.csproj">
+      <Project>{cf53a9dc-8b18-4397-af06-40acf2d3048c}</Project>
+      <Name>Connectors</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Scrummer.Application\Scrummer.Application.csproj">
       <Project>{cf353820-0a6b-4cfc-9ef7-26323056cae9}</Project>
       <Name>Scrummer.Application</Name>
@@ -657,7 +685,10 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="appjs\Standups\MemberwiseCtrl.ts" />
+    <TypeScriptCompile Include="app\Scrum\MemberwiseCtrl.ts" />
+    <TypeScriptCompile Include="app\Scrum\PBICtrl.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angular-ui-bootstrap\angular-ui-bootstrap.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\angular-ui\angular-ui-router.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-mocks.d.ts" />
@@ -687,7 +718,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>58091</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:58091/</IISUrl>
+          <IISUrl>http://localhost:58092/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

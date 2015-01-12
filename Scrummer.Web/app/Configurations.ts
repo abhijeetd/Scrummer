@@ -6,9 +6,9 @@
             return {
                 type: "TFS",
                 details: {
-                    url: "http://ha02tfs/sites/DefaultCollection/ESM2",
-                    username: "eschoolmall\adhamankar",
-                    password: "Kx$92gjA827"
+                    url: "tfs connection string",
+                    username: "username",
+                    password: "password"
                 }
             };
         }
